@@ -4,26 +4,21 @@
 from duo3d import *
 from msvcrt import getch  # Windows only
 
+duo_frame_num = 0
+
 def DUOCallback( pFrameData, pUserData ):
 	"""
 	"""
-	print "DUO Frame Timestamp: %10.1f ms" % ( pFrameData.timeStamp / 10.0 )
+	global duo_frame_num
 
-	if pFrameData.IMUPresent:
-		for i in range( 0, pFrameData.IMUSamples ):
-			print " Sample #%d" % ( i + 1 )
-
-			print "  Accelerometer: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].accelData[0],
-															pFrameData.IMUData[i].accelData[1],
-															pFrameData.IMUData[i].accelData[2] )
-
-			print "  Gyro: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].gyroData[0],
-													pFrameData.IMUData[i].gyroData[1],
-													pFrameData.IMUData[i].gyroData[2] )
-
-			print "  Temperature:   %8.6f C" % ( pFrameData.IMUData[i].tempData )
-
+	print "DUO Frame #%d\n" % ( duo_frame_num )
+	print "  Timestamp:          %10.1f ms" % ( pFrameData.timeStamp / 10.0 )
+	print "  Frame Size:         %dx%d" % ( pFrameData.width, pFrameData.height )
+	print "  Left Frame Buffer:  %p" % ( pFrameData.leftData )
+	print "  Right Frame Buffer: %p" % ( pFrameData.rightData )
 	print "-" * 50
+
+	duo_frame_num += 1
 
 def main():
 	"""
@@ -55,9 +50,6 @@ def main():
 
 			# Set selected resolution
 			SetDUOResolutionInfo( duo, ri )
-
-			# Set IMU range
-			SetDUOIMURange( duo, DUO_ACCEL_2G, DUO_GYRO_250 )
 
 			# Start capture and pass callback function that will be called on every frame captured
 			callback = DUOFrameCallback( DUOCallback )

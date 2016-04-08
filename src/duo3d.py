@@ -22,17 +22,35 @@ import os
 import ctypes as ct
 
 __all__ = [
-		"CloseDUO", "DUOFrame", "DUOFrameCallback", "DUOIMUSample",
-		"DUOInstance", "DUOResolutionInfo",
-		"DUO_ACCEL_2G", "DUO_ACCEL_4G", "DUO_ACCEL_16G", "DUO_ACCEL_8G",
+		"CloseDUO", "EnumerateResolutions", "FindOptimalBinning",
+		"GetDUOCalibrationPresent", 	"GetDUOCameraSwap", "GetDUODeviceName",
+		"GetDUOExposure", "GetDUOExposureMS", "GetDUOExtrinsics", "GetDUOFOV",
+		"GetDUOFirmwareBuild", "GetDUOFirmwareVersion", "GetDUOFrameDimension",
+		"GetDUOGain", "GetDUOHFlip", "GetDUOIMURange", "GetDUOIntrinsics",
+		"GetDUOLedPWM", "GetDUOSerialNumber", "GetDUOStereoParameters",
+		"GetDUOUndistort", "GetDUOVFlip", "GetLibVersion", "OpenDUO",
+		"SetDUOCameraSwap", "SetDUOExposure", "SetDUOExposureMS", "SetDUOGain",
+		"SetDUOHFlip", "SetDUOIMURange", "SetDUOLedPWM", "SetDUOLedPWMSeq",
+		"SetDUOResolutionInfo", "SetDUOUndistort", "SetDUOVFlip", "StartDUO",
+		"StopDUO",
+
+		"DUOFrame", "DUOFrameCallback", "DUOIMUSample", "DUOInstance",
+		"DUOLEDSeq", "DUOResolutionInfo", "PDUOFrame", "PDUOLEDSeq",
+		"PDUOResolutionInfo",
+
+		"DUO_ACCEL_16G", "DUO_ACCEL_2G", "DUO_ACCEL_4G", "DUO_ACCEL_8G",
 		"DUO_BIN_ANY", "DUO_BIN_HORIZONTAL2", "DUO_BIN_HORIZONTAL4",
 		"DUO_BIN_NONE", "DUO_BIN_VERTICAL2", "DUO_BIN_VERTICAL4",
-		"DUO_GYRO_250", "DUO_GYRO_500", "DUO_GYRO_1000", "DUO_GYRO_2000",
-		"EnumerateResolutions", "GetDUODeviceName", "GetDUOFirmwareBuild",
-		"GetDUOFirmwareVersion", "GetDUOSerialNumber",
-		"GetLibVersion", "OpenDUO", "SetDUOResolutionInfo", "StartDUO",
-		"StopDUO"
-		]  # TODO: Update this list
+		"DUO_CALIBRATION_PRESENT", "DUO_DEVICE_NAME", "DUO_EXPOSURE",
+		"DUO_EXTR", "DUO_EXTRINSICS", "DUO_FIRMWARE_BUILD",
+		"DUO_FIRMWARE_VERSION", "DUO_FOV", "DUO_FRAME_DIMENSION", "DUO_GAIN",
+		"DUO_GYRO_1000", "DUO_GYRO_2000", "DUO_GYRO_250", "DUO_GYRO_500",
+		"DUO_HFLIP", "DUO_IMU_RANGE", "DUO_INRINSICS", "DUO_INTR",
+		"DUO_LED_PWM", "DUO_LED_PWM_SEQ", "DUO_MAX_IMU_SAMPLES",
+		"DUO_MILLISECONDS", "DUO_PERCENTAGE", "DUO_RESOLUTION_INFO",
+		"DUO_SERIAL_NUMBER", "DUO_STEREO", "DUO_STEREO_PARAMETERS",
+		"DUO_SWAP_CAMERAS", "DUO_UNDISTORT", "DUO_VFLIP",
+		]
 
 # Load shared library
 if os.sys.platform.startswith( "win" ):
@@ -247,6 +265,7 @@ def EnumerateResolutions( resList, resListSize, width = -1, height = -1,
 	To enumerate resolution settings for specific resolution,
 	set width and height and optionally fps.
 	To enumerate all supported resolutions set width, height and fps all to -1.
+
 	@note: There are large number of resolution setting supported.
 	@param resList:
 	@param resListSize:
@@ -263,6 +282,26 @@ def EnumerateResolutions( resList, resListSize, width = -1, height = -1,
 										binning,
 										fps )
 
+def FindOptimalBinning( width, height ):
+	"""
+	Finds optimal binning.
+	This maximizes sensor imaging area for given resolution.
+
+	@note: Not a part of DUO API, just a helper function
+	@param width: width of the frame
+	@param height: height of the frame
+	@return: optimal binning parameters for given (width, height)
+	"""
+	binning = DUO_BIN_NONE
+	if width <= 752 / 2:
+		binning += DUO_BIN_HORIZONTAL2
+	if height <= 480 / 4:
+		binning += DUO_BIN_VERTICAL4
+	elif height <= 480 / 2:
+		binning += DUO_BIN_VERTICAL2
+
+	return binning
+
 # DUO device initialization
 _duolib.OpenDUO.argtypes = [ ct.POINTER( DUOInstance ) ]
 _duolib.OpenDUO.restype = ct.c_bool
@@ -270,6 +309,7 @@ _duolib.OpenDUO.restype = ct.c_bool
 def OpenDUO( duo ):
 	"""
 	Opens the DUO device and initialized the passed DUOInstance handle pointer.
+
 	@param duo: DUOInstance handle pointer
 	@return: True on success
 	"""
@@ -281,6 +321,7 @@ _duolib.CloseDUO.restype = ct.c_bool
 def CloseDUO( duo ):
 	"""
 	Closes the DUO device.
+
 	@param duo: DUOInstance handle pointer
 	@return: True on success
 	"""
@@ -298,17 +339,20 @@ _duolib.StartDUO.argtypes = [ DUOInstance,
 							ct.c_bool ]
 _duolib.StartDUO.restype = ct.c_bool
 
-def StartDUO( duo, frameCallback, pUserData = None, masterMode = True ):
+def StartDUO( duo, frameCallback = None, pUserData = None, masterMode = True ):
 	"""
 	Starts capturing frames.
+
 	@param duo: DUOInstance handle pointer
 	@param frameCallback: pointer to user defined DUOFrameCallback callback function
 	@param pUserData: any user data that needs to be passed to the callback function
 	@param masterMode:
 	@return: True on success
 	"""
+	callback = ( frameCallback if frameCallback is not None
+				else DUOFrameCallback() )
 	return _duolib.StartDUO( duo,
-							frameCallback,  # prev: DUOFrameCallback( frameCallback )
+							callback,
 							pUserData,
 							masterMode )
 
@@ -318,6 +362,7 @@ _duolib.StopDUO.restype = ct.c_bool
 def StopDUO( duo ):
 	"""
 	Stops capturing frames.
+
 	@param duo: DUOInstance handle pointer
 	@return: True on success
 	"""
