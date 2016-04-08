@@ -39,14 +39,16 @@ if os.sys.platform.startswith( "win" ):
 	_duolib_filename = "DUOLib.dll"
 elif os.sys.platform.startswith( "linux" ):
 	_duolib_filename = "libDUO.so"
+elif os.sys.platform.startswith( "darwin" ):
+	_duolib_filename = "libDUO.dylib"
 _duolib_filepath = os.path.abspath( os.path.join( os.path.dirname( __file__ ),
 												"..",
 												_duolib_filename ) )
 
 if not os.path.isfile( _duolib_filepath ):
-	_duolib_path = os.path.dirname( _duolib_filepath )
+	_duolib_dir = os.path.dirname( _duolib_filepath )
 	error_str = "You need to copy '%s' from DUOSDK into %s to make this package work"
-	raise ImportError( error_str % ( _duolib_filename, _duolib_path ) )
+	raise ImportError( error_str % ( _duolib_filename, _duolib_dir ) )
 
 _duolib = ct.cdll.LoadLibrary( _duolib_filepath )
 
@@ -230,7 +232,7 @@ def GetLibVersion():
 	return _duolib.GetLibVersion()
 
 # DUO resolution enumeration
-_duolib.EnumerateResolutions.argtypes = [ ct.POINTER( DUOResolutionInfo ),
+_duolib.EnumerateResolutions.argtypes = [ PDUOResolutionInfo,
 										ct.c_int32,
 										ct.c_int32,
 										ct.c_int32,
@@ -324,7 +326,7 @@ def StopDUO( duo ):
 # DUO Camera parameters control
 __DUOParamSet__ = _duolib[ 0x08 ]  # Cannot be imported by name due to underscores,
 __DUOParamSet__.restype = ct.c_bool
-__DUOParamGet__ = _duolib[ 0x07 ]  # ... therefore import by ordinals
+__DUOParamGet__ = _duolib[ 0x07 ]  # ... therefore let's import it by ordinal
 __DUOParamGet__.restype = ct.c_bool
 
 # Get DUO parameters
@@ -438,7 +440,7 @@ def GetDUOFOV( duo, ri ):
 	"""
 	# FIXME: Type check
 	val = ct.c_double()
-	__DUOParamGet__( duo, DUO_FOV, ct.byref( ri ), ct.byref( val ) )
+	__DUOParamGet__( duo, DUO_FOV, ct.byref( ri ), ct.byref( val ) )  # FIXME: is byref( ri ) necessary?
 	return val.value
 
 def GetDUOUndistort( duo ):
@@ -471,7 +473,7 @@ def GetDUOStereoParameters( duo, val ):
 
 def GetDUOIMURange( duo ):
 	"""
-
+	@return: tuple(accel, gyro)
 	"""
 	accel = ct.c_int()
 	gyro = ct.c_int()
