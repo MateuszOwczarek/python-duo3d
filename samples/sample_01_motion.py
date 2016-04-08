@@ -12,15 +12,22 @@ def DUOCallback( pFrameData, pUserData ):
 	if pFrameData.IMUPresent:
 		for i in range( 0, pFrameData.IMUSamples ):
 			print " Sample #%d" % ( i + 1 )
-			print "  Accelerometer: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].accelData[0], pFrameData.IMUData[i].accelData[1], pFrameData.IMUData[i].accelData[2] )
-			print "  Gyro: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].gyroData[0], pFrameData.IMUData[i].gyroData[1], pFrameData.IMUData[i].gyroData[2] )
+			
+			print "  Accelerometer: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].accelData[0],
+															pFrameData.IMUData[i].accelData[1],
+															pFrameData.IMUData[i].accelData[2] )
+			
+			print "  Gyro: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].gyroData[0],
+													pFrameData.IMUData[i].gyroData[1],
+													pFrameData.IMUData[i].gyroData[2] )
+			
 			print "  Temperature:   %8.6f C" % ( pFrameData.IMUData[i].tempData )
 
 	print "------------------------------------------------------"
 
 def main():
 	"""
-	
+
 	"""
 
 	print "DUOLib Version:       v%s" % GetLibVersion()

@@ -1,7 +1,6 @@
 ﻿  #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 from distutils.sysconfig import get_python_lib
 from setuptools import setup
 
@@ -10,7 +9,7 @@ def readme():
         return f.read()
 
 setup( name = 'duo3d',
-	version = '0.1',
+	version = '0.2',
 	description = 'DUOSDK python bindings',
 	long_description = readme(),
 	classifiers = [
