@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from duo3d import *
-import msvcrt
+from msvcrt import getch	# Windows only
 
 def DUOCallback( pFrameData, pUserData ):
 	"""
@@ -12,15 +12,15 @@ def DUOCallback( pFrameData, pUserData ):
 	if pFrameData.IMUPresent:
 		for i in range( 0, pFrameData.IMUSamples ):
 			print " Sample #%d" % ( i + 1 )
-			
+
 			print "  Accelerometer: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].accelData[0],
 															pFrameData.IMUData[i].accelData[1],
 															pFrameData.IMUData[i].accelData[2] )
-			
+
 			print "  Gyro: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].gyroData[0],
 													pFrameData.IMUData[i].gyroData[1],
 													pFrameData.IMUData[i].gyroData[2] )
-			
+
 			print "  Temperature:   %8.6f C" % ( pFrameData.IMUData[i].tempData )
 
 	print "------------------------------------------------------"
@@ -46,18 +46,19 @@ def main():
 			print "DUO Firmware Build:   %s" % GetDUOFirmwareBuild( duo )
 
 			print "Hit any key to start capturing"
-			msvcrt.getch()
+			getch()
 
 			# Set selected resolution
 			SetDUOResolutionInfo( duo, ri )
 
-			#
+			# Set IMU range
 			SetDUOIMURange( duo, DUO_ACCEL_2G, DUO_GYRO_250 )
 
-			# Start capture and pass DUOCallback function that will be called on every frame captured
-			if StartDUO( duo, DUOCallback, None ):
+			# Start capture and pass callback function that will be called on every frame captured
+			callback = DUOFrameCallback( DUOCallback )
+			if StartDUO( duo, callback, None ):
 				# Wait for any key
-				msvcrt.getch()
+				getch()
 				# Stop capture
 				StopDUO( duo )
 			else:
