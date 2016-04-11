@@ -7,21 +7,23 @@ from msvcrt import getch  # Windows only
 def DUOCallback( pFrameData, pUserData ):
 	"""
 	"""
-	print "DUO Frame Timestamp: %10.1f ms" % ( pFrameData.timeStamp / 10.0 )
+	frame_data = pFrameData.contents  # get the object to which the pointer points
 
-	if pFrameData.IMUPresent:
-		for i in range( 0, pFrameData.IMUSamples ):
+	print "DUO Frame Timestamp: %10.1f ms" % ( frame_data.timeStamp / 10.0 )
+
+	if pFrameData.contents.IMUPresent:
+		for i in range( 0, pFrameData.contents.IMUSamples ):
 			print " Sample #%d" % ( i + 1 )
 
-			print "  Accelerometer: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].accelData[0],
-															pFrameData.IMUData[i].accelData[1],
-															pFrameData.IMUData[i].accelData[2] )
+			# One way to access array data ...
+			print "  Accelerometer: [%8.5f, %8.5f, %8.5f]" % ( frame_data.IMUData[i].accelData[0],
+															frame_data.IMUData[i].accelData[1],
+															frame_data.IMUData[i].accelData[2] )
 
-			print "  Gyro: [%8.5f, %8.5f, %8.5f]" % ( pFrameData.IMUData[i].gyroData[0],
-													pFrameData.IMUData[i].gyroData[1],
-													pFrameData.IMUData[i].gyroData[2] )
+			# ... and another one
+			print "  Gyro: [%8.5f, %8.5f, %8.5f]" % ( tuple( frame_data.IMUData[i].gyroData ) )
 
-			print "  Temperature:   %8.6f C" % ( pFrameData.IMUData[i].tempData )
+			print "  Temperature:   %8.6f C" % ( frame_data.IMUData[i].tempData )
 
 	print "-" * 50
 
@@ -51,7 +53,7 @@ def main():
 			print "DUO Firmware Build:   %s" % GetDUOFirmwareBuild( duo )
 
 			print "Hit any key to start capturing"
-			getch()
+# 			getch()
 
 			# Set selected resolution
 			SetDUOResolutionInfo( duo, ri )

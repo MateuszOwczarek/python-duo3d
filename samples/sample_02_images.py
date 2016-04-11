@@ -10,12 +10,13 @@ def DUOCallback( pFrameData, pUserData ):
 	"""
 	"""
 	global duo_frame_num
+	frame_data = pFrameData.contents	# get the object to which the pointer points
 
 	print "DUO Frame #%d\n" % ( duo_frame_num )
-	print "  Timestamp:          %10.1f ms" % ( pFrameData.timeStamp / 10.0 )
-	print "  Frame Size:         %dx%d" % ( pFrameData.width, pFrameData.height )
-	print "  Left Frame Buffer:  %p" % ( pFrameData.leftData )
-	print "  Right Frame Buffer: %p" % ( pFrameData.rightData )
+	print "  Timestamp:          %10.1f ms" % ( frame_data.timeStamp / 10.0 )
+	print "  Frame Size:         %dx%d" % ( frame_data.width, frame_data.height )
+	print "  Left Frame Buffer:  ", ( frame_data.leftData )	# FIXME: Do it more elegant way
+	print "  Right Frame Buffer: ", ( frame_data.rightData )
 	print "-" * 50
 
 	duo_frame_num += 1
@@ -46,7 +47,7 @@ def main():
 			print "DUO Firmware Build:   %s" % GetDUOFirmwareBuild( duo )
 
 			print "Hit any key to start capturing"
-			getch()
+# 			getch()
 
 			# Set selected resolution
 			SetDUOResolutionInfo( duo, ri )
