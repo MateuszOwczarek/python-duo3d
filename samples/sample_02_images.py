@@ -1,5 +1,24 @@
-﻿  #!/usr/bin/env python
+﻿#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""
+    @author: Mateusz Owczarek (mateusz.owczarek@dokt.p.lodz.pl)
+    @version: 0.2
+    @date: April, 2016
+    @copyright: 2016 (c) Mateusz Owczarek
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+    This work was supported by the European Union's
+    Horizon 2020 Research and Innovation Programme
+    under grant agreement No 643636 "Sound of Vision."
+"""
 
 from duo3d import *
 from msvcrt import getch  # Windows only
