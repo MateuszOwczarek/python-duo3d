@@ -1,4 +1,4 @@
-﻿  # -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 """@package duo3d
 
@@ -16,41 +16,45 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
+
+    This work was supported by the European Union's
+    Horizon 2020 Research and Innovation Programme
+    under grant agreement No 643636 "Sound of Vision."
 """
 
 import os
 import ctypes as ct
 
 __all__ = [
-        "CloseDUO", "EnumerateResolutions", "FindOptimalBinning",
-        "GetDUOCalibrationPresent", "GetDUOCameraSwap", "GetDUODeviceName",
-        "GetDUOExposure", "GetDUOExposureMS", "GetDUOExtrinsics", "GetDUOFOV",
-        "GetDUOFirmwareBuild", "GetDUOFirmwareVersion", "GetDUOFrameDimension",
-        "GetDUOGain", "GetDUOHFlip", "GetDUOIMURange", "GetDUOIntrinsics",
-        "GetDUOLedPWM", "GetDUOSerialNumber", "GetDUOStereoParameters",
-        "GetDUOUndistort", "GetDUOVFlip", "GetLibVersion", "OpenDUO",
-        "SetDUOCameraSwap", "SetDUOExposure", "SetDUOExposureMS", "SetDUOGain",
-        "SetDUOHFlip", "SetDUOIMURange", "SetDUOLedPWM", "SetDUOLedPWMSeq",
-        "SetDUOResolutionInfo", "SetDUOUndistort", "SetDUOVFlip", "StartDUO",
-        "StopDUO",
+    "CloseDUO", "EnumerateDUOResolutions", "FindOptimalBinning",
+    "GetDUOCalibrationPresent", "GetDUOCameraSwap", "GetDUODeviceName",
+    "GetDUOExposure", "GetDUOExposureMS", "GetDUOExtrinsics", "GetDUOFOV",
+    "GetDUOFirmwareBuild", "GetDUOFirmwareVersion", "GetDUOFrameDimension",
+    "GetDUOGain", "GetDUOHFlip", "GetDUOIMURange", "GetDUOIntrinsics",
+    "GetDUOLedPWM", "GetDUOSerialNumber", "GetDUOStereoParameters",
+    "GetDUOUndistort", "GetDUOVFlip", "GetDUOLibVersion", "OpenDUO",
+    "SetDUOCameraSwap", "SetDUOExposure", "SetDUOExposureMS", "SetDUOGain",
+    "SetDUOHFlip", "SetDUOIMURange", "SetDUOLedPWM", "SetDUOLedPWMSeq",
+    "SetDUOResolutionInfo", "SetDUOUndistort", "SetDUOVFlip", "StartDUO",
+    "StopDUO",
 
-        "DUOFrame", "DUOFrameCallback", "DUOIMUSample", "DUOInstance",
-        "DUOLEDSeq", "DUOResolutionInfo", "PDUOFrame", "PDUOLEDSeq",
-        "PDUOResolutionInfo",
+    "DUOFrame", "DUOFrameCallback", "DUOIMUSample", "DUOInstance",
+    "DUOLEDSeq", "DUOResolutionInfo", "PDUOFrame", "PDUOLEDSeq",
+    "PDUOResolutionInfo",
 
-        "DUO_ACCEL_16G", "DUO_ACCEL_2G", "DUO_ACCEL_4G", "DUO_ACCEL_8G",
-        "DUO_BIN_ANY", "DUO_BIN_HORIZONTAL2", "DUO_BIN_HORIZONTAL4",
-        "DUO_BIN_NONE", "DUO_BIN_VERTICAL2", "DUO_BIN_VERTICAL4",
-        "DUO_CALIBRATION_PRESENT", "DUO_DEVICE_NAME", "DUO_EXPOSURE",
-        "DUO_EXTR", "DUO_EXTRINSICS", "DUO_FIRMWARE_BUILD",
-        "DUO_FIRMWARE_VERSION", "DUO_FOV", "DUO_FRAME_DIMENSION", "DUO_GAIN",
-        "DUO_GYRO_1000", "DUO_GYRO_2000", "DUO_GYRO_250", "DUO_GYRO_500",
-        "DUO_HFLIP", "DUO_IMU_RANGE", "DUO_INRINSICS", "DUO_INTR",
-        "DUO_LED_PWM", "DUO_LED_PWM_SEQ", "DUO_MAX_IMU_SAMPLES",
-        "DUO_MILLISECONDS", "DUO_PERCENTAGE", "DUO_RESOLUTION_INFO",
-        "DUO_SERIAL_NUMBER", "DUO_STEREO", "DUO_STEREO_PARAMETERS",
-        "DUO_SWAP_CAMERAS", "DUO_UNDISTORT", "DUO_VFLIP",
-        ]
+    "DUO_ACCEL_16G", "DUO_ACCEL_2G", "DUO_ACCEL_4G", "DUO_ACCEL_8G",
+    "DUO_BIN_ANY", "DUO_BIN_HORIZONTAL2", "DUO_BIN_HORIZONTAL4",
+    "DUO_BIN_NONE", "DUO_BIN_VERTICAL2", "DUO_BIN_VERTICAL4",
+    "DUO_CALIBRATION_PRESENT", "DUO_DEVICE_NAME", "DUO_EXPOSURE",
+    "DUO_EXTR", "DUO_EXTRINSICS", "DUO_FIRMWARE_BUILD",
+    "DUO_FIRMWARE_VERSION", "DUO_FOV", "DUO_FRAME_DIMENSION", "DUO_GAIN",
+    "DUO_GYRO_1000", "DUO_GYRO_2000", "DUO_GYRO_250", "DUO_GYRO_500",
+    "DUO_HFLIP", "DUO_IMU_RANGE", "DUO_INRINSICS", "DUO_INTR",
+    "DUO_LED_PWM", "DUO_LED_PWM_SEQ", "DUO_MAX_IMU_SAMPLES",
+    "DUO_MILLISECONDS", "DUO_PERCENTAGE", "DUO_RESOLUTION_INFO",
+    "DUO_SERIAL_NUMBER", "DUO_STEREO", "DUO_STEREO_PARAMETERS",
+    "DUO_SWAP_CAMERAS", "DUO_UNDISTORT", "DUO_VFLIP",
+    ]
 
 # Load shared library
 if os.sys.platform.startswith( "win" ):
@@ -59,7 +63,7 @@ elif os.sys.platform.startswith( "linux" ):
     _duolib_filename = "libDUO.so"
 elif os.sys.platform.startswith( "darwin" ):
     _duolib_filename = "libDUO.dylib"
-_duolib_filepath = os.path.abspath( os.path.join( os.path.dirname( __file__ ),
+_duolib_filepath = os.path.abspath(os.path.join( os.path.dirname( __file__ ),
                                                 "..",
                                                 _duolib_filename ) )
 
@@ -92,7 +96,7 @@ class DUOResolutionInfo( ct.Structure ):
         ( "fps", ct.c_float ),
         ( "minFps", ct.c_float ),
         ( "maxFps", ct.c_float ),
-     ]
+        ]
 
 PDUOResolutionInfo = ct.POINTER( DUOResolutionInfo )
 
@@ -104,7 +108,7 @@ class DUOIMUSample( ct.Structure ):
         ( "tempData", ct.c_float ),  # DUO temperature data
         ( "accelData", ct.c_float * 3 ),  # DUO accelerometer data (x,y,z)
         ( "gyroData", ct.c_float * 3 )  # DUO gyroscope data (x,y,z)
-         ]
+        ]
 
 DUO_MAX_IMU_SAMPLES = 100
 
@@ -123,7 +127,7 @@ class DUOFrame( ct.Structure ):
         ( "IMUPresent", ct.c_uint8 ),  # True if IMU chip is present ( DUO MLX )
         ( "IMUSamples", ct.c_uint32 ),  # Number of IMU data samples in this frame
         ( "IMUData", DUOIMUSample * DUO_MAX_IMU_SAMPLES )  # DUO IMU data samples
-         ]
+        ]
 
 PDUOFrame = ct.POINTER( DUOFrame )
 
@@ -240,25 +244,27 @@ DUO_STEREO_PARAMETERS = 20  # Get Only: ( pointer to DUO_STEREO structure )
 # DUO IMU Parameters
 DUO_IMU_RANGE = 21  # Set/Get: ( DUOAccelRange, DUOGyroRange )
 
-_duolib.GetLibVersion.argtypes = None
-_duolib.GetLibVersion.restype = ct.c_char_p
+_duolib.GetDUOLibVersion.argtypes = None
+_duolib.GetDUOLibVersion.restype = ct.c_char_p
 
-def GetLibVersion():
+def GetDUOLibVersion():
     """
 
     """
-    return _duolib.GetLibVersion()
+    return _duolib.GetDUOLibVersion()
 
 # DUO resolution enumeration
-_duolib.EnumerateResolutions.argtypes = [ PDUOResolutionInfo,
-                                         ct.c_int32,
-                                         ct.c_int32,
-                                         ct.c_int32,
-                                         ct.c_int32,
-                                         ct.c_float ]
-_duolib.EnumerateResolutions.restype = ct.c_int
+_duolib.EnumerateDUOResolutions.argtypes = [
+    PDUOResolutionInfo,
+    ct.c_int32,
+    ct.c_int32,
+    ct.c_int32,
+    ct.c_int32,
+    ct.c_float
+    ]
+_duolib.EnumerateDUOResolutions.restype = ct.c_int
 
-def EnumerateResolutions( resList, resListSize, width = -1, height = -1,
+def EnumerateDUOResolutions( resList, resListSize, width = -1, height = -1,
                           binning = DUO_BIN_ANY, fps = -1.0 ):
     """
     Enumerates supported resolutions.
@@ -275,7 +281,7 @@ def EnumerateResolutions( resList, resListSize, width = -1, height = -1,
     @param fps:
     @return: number of resolutions found
     """
-    return _duolib.EnumerateResolutions( ct.byref( resList ),
+    return _duolib.EnumerateDUOResolutions( ct.byref( resList ),
                                          resListSize,
                                          width,
                                          height,
@@ -349,12 +355,8 @@ def StartDUO( duo, frameCallback = None, pUserData = None, masterMode = True ):
     @param masterMode:
     @return: True on success
     """
-    callback = ( frameCallback if frameCallback is not None
-                else DUOFrameCallback() )
-    return _duolib.StartDUO( duo,
-                             callback,
-                             pUserData,
-                             masterMode )
+    callback = ( frameCallback if frameCallback is not None else DUOFrameCallback() )
+    return _duolib.StartDUO( duo, callback, pUserData, masterMode )
 
 _duolib.StopDUO.argtypes = [ DUOInstance ]
 _duolib.StopDUO.restype = ct.c_bool
@@ -369,10 +371,8 @@ def StopDUO( duo ):
     return _duolib.StopDUO( duo )
 
 # DUO Camera parameters control
-__DUOParamSet__ = _duolib[ 0x08 ]  # Cannot be imported by name due to underscores,
-__DUOParamSet__.restype = ct.c_bool
-__DUOParamGet__ = _duolib[ 0x07 ]  # ... therefore let's import it by ordinal
-__DUOParamGet__.restype = ct.c_bool
+_duolib.ParamSet.restype = ct.c_bool
+_duolib.ParamGet.restype = ct.c_bool
 
 # Get DUO parameters
 def GetDUODeviceName( duo ):
@@ -380,7 +380,7 @@ def GetDUODeviceName( duo ):
 
     """
     val = ct.create_string_buffer( 260 )
-    __DUOParamGet__( duo, DUO_DEVICE_NAME, val )
+    _duolib.ParamGet( duo, DUO_DEVICE_NAME, val )
     return val.value
 
 def GetDUOSerialNumber( duo ):
@@ -388,7 +388,7 @@ def GetDUOSerialNumber( duo ):
 
     """
     val = ct.create_string_buffer( 260 )
-    __DUOParamGet__( duo, DUO_SERIAL_NUMBER, val )
+    _duolib.ParamGet( duo, DUO_SERIAL_NUMBER, val )
     return val.value
 
 def GetDUOFirmwareVersion( duo ):
@@ -396,7 +396,7 @@ def GetDUOFirmwareVersion( duo ):
 
     """
     val = ct.create_string_buffer( 260 )
-    __DUOParamGet__( duo, DUO_FIRMWARE_VERSION, val )
+    _duolib.ParamGet( duo, DUO_FIRMWARE_VERSION, val )
     return val.value
 
 def GetDUOFirmwareBuild( duo ):
@@ -404,7 +404,7 @@ def GetDUOFirmwareBuild( duo ):
 
     """
     val = ct.create_string_buffer( 260 )
-    __DUOParamGet__( duo, DUO_FIRMWARE_BUILD, val )
+    _duolib.ParamGet( duo, DUO_FIRMWARE_BUILD, val )
     return val.value
 
 def GetDUOFrameDimension( duo ):
@@ -414,7 +414,7 @@ def GetDUOFrameDimension( duo ):
     """
     w = ct.c_uint32()
     h = ct.c_uint32()
-    __DUOParamGet__( duo, DUO_FRAME_DIMENSION, ct.byref( w ), ct.byref( h ) )
+    _duolib.ParamGet( duo, DUO_FRAME_DIMENSION, ct.byref( w ), ct.byref( h ) )
     return ( w.value, h.value )
 
 def GetDUOExposure( duo ):
@@ -422,7 +422,7 @@ def GetDUOExposure( duo ):
 
     """
     val = ct.c_double()
-    __DUOParamGet__( duo, DUO_EXPOSURE, ct.byref( val ), DUO_PERCENTAGE )
+    _duolib.ParamGet( duo, DUO_EXPOSURE, ct.byref( val ), DUO_PERCENTAGE )
     return val.value
 
 def GetDUOExposureMS( duo ):
@@ -430,7 +430,7 @@ def GetDUOExposureMS( duo ):
 
     """
     val = ct.c_double()
-    __DUOParamGet__( duo, DUO_EXPOSURE, ct.byref( val ), DUO_MILLISECONDS )
+    _duolib.ParamGet( duo, DUO_EXPOSURE, ct.byref( val ), DUO_MILLISECONDS )
     return val.value
 
 def GetDUOGain( duo ):
@@ -438,7 +438,7 @@ def GetDUOGain( duo ):
 
     """
     val = ct.c_double()
-    __DUOParamGet__( duo, DUO_GAIN, ct.byref( val ) )
+    _duolib.ParamGet( duo, DUO_GAIN, ct.byref( val ) )
     return val.value
 
 def GetDUOHFlip( duo ):
@@ -446,7 +446,7 @@ def GetDUOHFlip( duo ):
 
     """
     val = ct.c_int()
-    __DUOParamGet__( duo, DUO_HFLIP, ct.byref( val ) )
+    _duolib.ParamGet( duo, DUO_HFLIP, ct.byref( val ) )
     return val.value
 
 def GetDUOVFlip( duo ):
@@ -454,7 +454,7 @@ def GetDUOVFlip( duo ):
 
     """
     val = ct.c_int()
-    __DUOParamGet__( duo, DUO_VFLIP, ct.byref( val ) )
+    _duolib.ParamGet( duo, DUO_VFLIP, ct.byref( val ) )
     return val.value
 
 def GetDUOCameraSwap( duo ):
@@ -462,7 +462,7 @@ def GetDUOCameraSwap( duo ):
 
     """
     val = ct.c_int()
-    __DUOParamGet__( duo, DUO_SWAP_CAMERAS, ct.byref( val ) )
+    _duolib.ParamGet( duo, DUO_SWAP_CAMERAS, ct.byref( val ) )
     return val.value
 
 def GetDUOLedPWM( duo ):
@@ -470,14 +470,14 @@ def GetDUOLedPWM( duo ):
 
     """
     val = ct.c_double()
-    __DUOParamGet__( duo, DUO_LED_PWM, ct.byref( val ) )
+    _duolib.ParamGet( duo, DUO_LED_PWM, ct.byref( val ) )
     return val.value
 
 def GetDUOCalibrationPresent( duo ):
     """
 
     """
-    return __DUOParamGet__( duo, DUO_CALIBRATION_PRESENT )
+    return _duolib.ParamGet( duo, DUO_CALIBRATION_PRESENT )
 
 def GetDUOFOV( duo, ri ):
     """
@@ -485,7 +485,7 @@ def GetDUOFOV( duo, ri ):
     """
     # FIXME: Type check
     val = ct.c_double()
-    __DUOParamGet__( duo, DUO_FOV, ct.byref( ri ), ct.byref( val ) )  # FIXME: is byref( ri ) necessary?
+    _duolib.ParamGet( duo, DUO_FOV, ct.byref( ri ), ct.byref( val ) )  # FIXME: is byref( ri ) necessary?
     return val.value
 
 def GetDUOUndistort( duo ):
@@ -493,7 +493,7 @@ def GetDUOUndistort( duo ):
 
     """
     val = ct.c_int()
-    __DUOParamGet__( duo, DUO_UNDISTORT, ct.byref( val ) )
+    _duolib.ParamGet( duo, DUO_UNDISTORT, ct.byref( val ) )
     return val.value
 
 def GetDUOIntrinsics( duo, val ):
@@ -501,20 +501,20 @@ def GetDUOIntrinsics( duo, val ):
 
     """
     # FIXME: Type check
-    return __DUOParamGet__( duo, DUO_INRINSICS, ct.byref( val ) )
+    return _duolib.ParamGet( duo, DUO_INRINSICS, ct.byref( val ) )
 
 def GetDUOExtrinsics( duo, val ):
     """
 
     """
-    return __DUOParamGet__( duo, DUO_EXTRINSICS, ct.byref( val ) )
+    return _duolib.ParamGet( duo, DUO_EXTRINSICS, ct.byref( val ) )
 
 def GetDUOStereoParameters( duo, val ):
     """
 
     """
     # FIXME: Type check
-    return __DUOParamGet__( duo, DUO_STEREO_PARAMETERS, ct.byref( val ) )
+    return _duolib.ParamGet( duo, DUO_STEREO_PARAMETERS, ct.byref( val ) )
 
 def GetDUOIMURange( duo ):
     """
@@ -522,7 +522,7 @@ def GetDUOIMURange( duo ):
     """
     accel = ct.c_int()
     gyro = ct.c_int()
-    __DUOParamGet__( duo, DUO_IMU_RANGE, ct.byref( accel ), ct.byref( gyro ) )
+    _duolib.ParamGet( duo, DUO_IMU_RANGE, ct.byref( accel ), ct.byref( gyro ) )
     return ( accel.value, gyro.value )
 
 # Set DUO parameters
@@ -531,78 +531,74 @@ def SetDUOResolutionInfo( duo, val ):
     Sets the desired resolution, binning and the frame rate
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_RESOLUTION_INFO, ct.byref( val ) )
+    return _duolib.ParamSet( duo, DUO_RESOLUTION_INFO, ct.byref( val ) )
 
 def SetDUOExposure( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_EXPOSURE, ct.c_double( val ),
-                            DUO_PERCENTAGE )
+    return _duolib.ParamSet( duo, DUO_EXPOSURE, ct.c_double( val ), DUO_PERCENTAGE )
 
 def SetDUOExposureMS( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_EXPOSURE, ct.c_double( val ),
-                            DUO_MILLISECONDS )
+    return _duolib.ParamSet( duo, DUO_EXPOSURE, ct.c_double( val ), DUO_MILLISECONDS )
 
 def SetDUOGain( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_GAIN, ct.c_double( val ) )
+    return _duolib.ParamSet( duo, DUO_GAIN, ct.c_double( val ) )
 
 def SetDUOHFlip( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_HFLIP, ct.c_int( val ) )
+    return _duolib.ParamSet( duo, DUO_HFLIP, ct.c_int( val ) )
 
 def SetDUOVFlip( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_VFLIP, ct.c_int( val ) )
+    return _duolib.ParamSet( duo, DUO_VFLIP, ct.c_int( val ) )
 
 def SetDUOCameraSwap( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_SWAP_CAMERAS, ct.c_int( val ) )
+    return _duolib.ParamSet( duo, DUO_SWAP_CAMERAS, ct.c_int( val ) )
 
 def SetDUOLedPWM( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_LED_PWM, ct.c_double( val ) )
+    return _duolib.ParamSet( duo, DUO_LED_PWM, ct.c_double( val ) )
 
 def SetDUOLedPWMSeq( duo, val, size ):
     """
     @param val: DUOLEDSeq array
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_LED_PWM_SEQ, ct.byref( val ),
-                            ct.c_uint32( size ) )
+    return _duolib.ParamSet( duo, DUO_LED_PWM_SEQ, ct.byref( val ), ct.c_uint32( size ) )
 
 def SetDUOUndistort( duo, val ):
     """
 
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_UNDISTORT, ct.c_int( val ) )
+    return _duolib.ParamSet( duo, DUO_UNDISTORT, ct.c_int( val ) )
 
 def SetDUOIMURange( duo, accel, gyro ):
     """
     Sets the IMU DUOAccelRange and DUOGyroRange range.
     @return: True on success
     """
-    return __DUOParamSet__( duo, DUO_IMU_RANGE, ct.c_int( accel ),
-                            ct.c_int( gyro ) )
+    return _duolib.ParamSet( duo, DUO_IMU_RANGE, ct.c_int( accel ), ct.c_int( gyro ) )

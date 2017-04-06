@@ -55,13 +55,13 @@ def main():
     HEIGHT = 240
     FPS = 30.0
 
-    print "DUOLib Version:       v%s" % GetLibVersion()
+    print "DUOLib Version:       v%s" % GetDUOLibVersion()
 
     ri = DUOResolutionInfo()
 
     # Select the resolution and frame rate
     binning = FindOptimalBinning( WIDTH, HEIGHT )
-    if EnumerateResolutions( ri, 1, WIDTH, HEIGHT, binning, FPS ):
+    if EnumerateDUOResolutions( ri, 1, WIDTH, HEIGHT, binning, FPS ):
         duo = DUOInstance()
 
         # Open DUO
