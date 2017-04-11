@@ -3,7 +3,7 @@ python-duo3d
 
 About
 -----
-This package is a (not so perfect) Python binding of [DUO API](https://duo3d.com/docs/articles/api) (DUOLib.)
+This package is a Python binding of [DUO API](https://duo3d.com/docs/articles/api) (DUOLib.)
 
 Install
 -------
@@ -16,7 +16,7 @@ Dependencies
 -------------
 
 * ctypes
-* DUOSDK >= v1.5.0.26 (get it from [duo3d.com/downloads/](http://duo3d.com/downloads/))
+* DUOSDK >= v1.0.80.20 (get it from [duo3d.com/downloads/](http://duo3d.com/downloads/))
 
 Usage
 ------
